@@ -74,5 +74,9 @@ npx @biomejs/biome init
 [biome.json](./biome.json)を参照
 
 ## 画面
+デザインコンポーネントに[Chakra-ui](https://chakra-ui.com/)を使う
+
+## react-router-dom
+本書では`BrowserRouter`コンポーネントを使っている。今回はv6推奨の[createBrowserRouter](https://reactrouter.com/en/main/routers/create-browser-router)を導入してみた。
 
 ## suspense / Tanstack Query
