@@ -2,6 +2,9 @@
     "private": true,
     "name": "backend",
     "version": "0.0.1",
+    "scripts": {
+        "start": "node server.cjs"
+    },
     "devDependencies": {
         "@types/json-server": "^0.14.7",
         "@types/node": "^20.10.5",
