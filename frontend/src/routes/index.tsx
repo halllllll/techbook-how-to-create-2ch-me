@@ -1,11 +1,13 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
-// const Home = lazy(async () => await import('../components/Home'));
 import { Home } from '../components/Home';
+// const Home = lazy(async () => await import('../components/Home'));
+import { Layout } from '../components/Layout';
 
 export const router = createBrowserRouter([
   {
-    path: '/',
-    element: <Home />,
+    path: "/",
+    element: <Layout />,
+    children: [{ index: true, path: '/', element: <Home /> }],
   },
   {
     path: '*',
