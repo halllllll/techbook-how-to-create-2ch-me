@@ -62,6 +62,37 @@ process.on("SIGINT", () => {
 });
 ```
 
+## vite.config.tsのプロキシ設定
+上記のように`json-server`の起動を変更したのに伴ってこちらも修正。とはいえ、共通のポートを使うようにするようにしただけ。デフォルト値は気分であえて全然違うのを設定しているがfetch時になにかおかしいことを判別しやすくなるかな？程度でとくに意味はない
+
+```ts:vite.config.ts
+const root = resolve(__dirname, "../");
+const tempPortFilePath = join(root, "temp-port.txt");
+
+function getBackendPort() {
+	try {
+		const port = fs.readFileSync(tempPortFilePath, "utf8");
+		console.info(`proxy port: ${port}`);
+		return port.trim(); // 余分な空白や改行を削除
+	} catch (e) {
+		console.error(e);
+		console.warn(
+			`Cannot read port from ${tempPortFilePath}, defaulting to 8062`,
+		);
+		return "9999"; // デフォルト値を設定
+	}
+}
+
+//　略
+	const backendPort = getBackendPort()
+	return defineConfig({
+		plugins: [react()],
+		server: {
+			proxy: {
+				"/api": {
+					target: `http://localhost:${backendPort}`,
+```
+
 ## biome
 
 ついでに`biome.js`を導入する。プロジェクトルートでインストールし、frontend/backend両方に効かせる
@@ -74,7 +105,10 @@ npx @biomejs/biome init
 [biome.json](./biome.json)を参照
 
 ## 画面
-デザインコンポーネントに[Chakra-ui](https://chakra-ui.com/)を使う
+デザインコンポーネントに[Chakra-ui](https://chakra-ui.com/)を使う． **ちゃんとデザインを整えるつもりは一切なく、単に機能面での理由。** 見た目以外の差異を中心に書く
+
+- formまわりが若干異なる気がする
+  - `useRef`とエラー。本書では「どのInputが不正か」をちゃんとやってるが、ここでは特定のフォームの中全体で考えることにして横着した
 
 ## react-router-dom
 本書では`BrowserRouter`コンポーネントを使っている。今回はv6推奨の[createBrowserRouter](https://reactrouter.com/en/main/routers/create-browser-router)を導入してみた。

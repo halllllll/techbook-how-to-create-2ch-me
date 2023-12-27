@@ -37,3 +37,32 @@ export type UserAction =
   | {
       type: 'reset';
     };
+
+export type Thread = {
+  id: number;
+  title: string;
+  topic: string;
+  createdAt: string;
+  commentTotal: number;
+  builder: string;
+};
+
+export type ThreadState = {
+  threads: Thread[];
+  isLoading: boolean;
+  currentThread: null | Thread;
+  error: null | string;
+};
+
+export type ThreadAction =
+  | {
+      type: 'add_thread';
+      newThread: Thread;
+    }
+  | {
+      type: 'reset';
+    };
+
+export interface ThreadFormProps {
+  threadDispatch: React.Dispatch<ThreadAction>;
+}

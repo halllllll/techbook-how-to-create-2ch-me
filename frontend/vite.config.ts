@@ -16,7 +16,7 @@ function getBackendPort() {
 		console.warn(
 			`Cannot read port from ${tempPortFilePath}, defaulting to 8062`,
 		);
-		return "8062"; // デフォルト値を設定
+		return "9999"; // デフォルト値を設定
 	}
 }
 
@@ -29,7 +29,7 @@ export default ({ mode }) => {
 		server: {
 			proxy: {
 				"/api": {
-					target: `http:localhost:${backendPort}`,
+					target: `http://localhost:${backendPort}`,
 					changeOrigin: true,
 					rewrite: (path) => path.replace(/^\/api/, ""),
 				},

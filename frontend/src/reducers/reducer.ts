@@ -1,8 +1,8 @@
 // reducerの実装と初期値
 
-import { UserAction, UserState } from '../types/types';
+import { ThreadAction, ThreadState, UserAction, UserState } from '../types/types';
 
-const initialize = <T extends UserState>(initialState: T): T => {
+const initialize = <T extends UserState | ThreadState>(initialState: T): T => {
   return {
     ...initialState,
     isLoading: false,
@@ -44,5 +44,28 @@ export const userReducer = (userState: UserState, action: UserAction): UserState
       return initialize(userInitialState);
     default:
       return userState;
+  }
+};
+
+export const threadInitialState: ThreadState = {
+  threads: [],
+  isLoading: true,
+  currentThread: null,
+  error: null,
+};
+
+export const ThreadReducer = (threadState: ThreadState, action: ThreadAction): ThreadState => {
+  switch (action.type) {
+    case 'add_thread':
+      return {
+        ...threadState,
+        threads: [...threadState.threads, action.newThread],
+        isLoading: false,
+        error: null,
+      };
+    case 'reset':
+      return initialize(threadInitialState);
+    default:
+      return threadState;
   }
 };
