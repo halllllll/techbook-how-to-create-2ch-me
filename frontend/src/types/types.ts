@@ -60,9 +60,21 @@ export type ThreadAction =
       newThread: Thread;
     }
   | {
+      type: 'set_threads';
+      threads: Thread[];
+    }
+  | {
+      type: 'set_error';
+      error: string | null;
+    }
+  | {
       type: 'reset';
     };
 
-export interface ThreadFormProps {
-  threadDispatch: React.Dispatch<ThreadAction>;
-}
+export type ThreadFormProps = {
+  threadsDispatch: React.Dispatch<ThreadAction>;
+};
+
+export type ThreadContentProps = ThreadFormProps & {
+  threadsState: ThreadState;
+};

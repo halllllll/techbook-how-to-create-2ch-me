@@ -113,4 +113,29 @@ npx @biomejs/biome init
 ## react-router-dom
 本書では`BrowserRouter`コンポーネントを使っている。今回はv6推奨の[createBrowserRouter](https://reactrouter.com/en/main/routers/create-browser-router)を導入してみた。
 
-## suspense / Tanstack Query
+## react-error-boundary
+（後述する）データの取得とかを`Suspense`を使ってやるつもりだったので，どうせならよく併用されるらしい`react-error-boundary`を導入した。
+
+```tsx
+<Heading as="h2">スレッドの新規作成</Heading>
+<ErrorBoundary
+	FallbackComponent={ErrorFallback}
+	onError={() => {
+		setErrCount(errCount + 1);
+	}}
+>
+	{errCount > 0 && (
+		<Box>
+		<Text as={'p'} color={'tomato'} fontSize={'xl'}>{`エラー回数: ${errCount}`}</Text>
+		</Box>
+	)}
+	<ThreadForm threadsDispatch={threadsDispatch} />
+</ErrorBoundary>
+```
+
+エラーが生じた際に専用の状態を管理しなくても、それ用画面を出してくれる。
+
+## suspense / TanStack Query
+スレッドの取得の部分で`Suspense`を使ってみることにした。単に標準fetchだとエラーバウンダリに補足されなかったり，無限にPromiseがsettledにならず止まらなかったり，`ErrorBoundary`のFallbackComponentとして設定しているエラー復帰も効かない（これはサスペンドされているコンポーネントの状態が変わらないせい？）。書き方がまったくわからないので諦めて`TanStack Query`の公式ページに載っているやり方をそのまま使った。
+
+[TanStack Query v5 - Suspense](https://tanstack.com/query/latest/docs/react/guides/suspense)

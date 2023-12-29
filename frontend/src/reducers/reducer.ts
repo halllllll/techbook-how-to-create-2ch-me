@@ -63,6 +63,19 @@ export const ThreadReducer = (threadState: ThreadState, action: ThreadAction): T
         isLoading: false,
         error: null,
       };
+    case 'set_threads':
+      return {
+        ...threadState,
+        threads: action.threads,
+        isLoading: false,
+        error: null,
+      };
+    case 'set_error':
+      return {
+        ...threadState,
+        isLoading: false,
+        error: action.error,
+      };
     case 'reset':
       return initialize(threadInitialState);
     default:

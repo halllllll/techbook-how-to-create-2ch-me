@@ -1,13 +1,5 @@
-import {
-  type FC,
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from 'react';
-import { userInitialState, userReducer } from "../reducers/reducer";
+import { type FC, ReactNode, createContext, useContext, useReducer } from 'react';
+import { userInitialState, userReducer } from '../reducers/reducer';
 import { UserCtxType } from '../types/types';
 
 // createContextもここでやってる
