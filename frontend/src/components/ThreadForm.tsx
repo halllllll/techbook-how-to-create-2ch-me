@@ -10,7 +10,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { type FC, FormEventHandler, useCallback, useRef, useState } from 'react';
-import { useErrorBoundary } from 'react-error-boundary';
+import { usePostThread } from '../service/thread';
 import { ThreadFormProps } from '../types/types';
 
 export const ThreadForm: FC<ThreadFormProps> = ({ threadsDispatch }) => {
@@ -20,40 +20,26 @@ export const ThreadForm: FC<ThreadFormProps> = ({ threadsDispatch }) => {
   const threadTitleRef = useRef<HTMLInputElement>(null);
   const threadTopicRef = useRef<HTMLTextAreaElement>(null);
 
-  const { showBoundary } = useErrorBoundary();
-
+  const { mutate, isPending } = usePostThread();
   const handleSubmit = useCallback<FormEventHandler>(
     async (event) => {
       event.preventDefault();
       setIsError(false);
+      // 超簡易的バリデーションチェック(手抜き)
       if (!threadTitleRef.current?.value || !threadTopicRef.current?.value) {
         setIsError(true);
         return;
       }
+
+      // ここからTanStack QueryのuseMutationを使う
+      // （useMutationのオプションで設定しているため、react-error-boundaryのためのshowBoundaryは不要）
       const data = { title: threadTitleRef.current.value, topic: threadTopicRef.current.value };
-
-      const fetchedNewThread = await fetch('/api/threads', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+      mutate(data, {
+        onSuccess: () => formRef.current?.reset(),
+        onError: () => {},
       });
-
-      if (!fetchedNewThread.ok) {
-        formRef.current?.reset();
-        threadsDispatch({
-          type: 'set_error',
-          error: '新しいスレッド作成時にエラーが発生しました。',
-        });
-        showBoundary(new Error('Error in FETCHING!'));
-      }
-      const result = await fetchedNewThread.json();
-
-      threadsDispatch({ type: 'add_thread', newThread: result });
-      formRef.current?.reset();
     },
-    [showBoundary, threadsDispatch],
+    [mutate],
   );
 
   return (
@@ -63,7 +49,7 @@ export const ThreadForm: FC<ThreadFormProps> = ({ threadsDispatch }) => {
           <HStack spacing={5}>
             <FormLabel>タイトル</FormLabel>
             <VStack spacing={0}>
-              <Input ref={threadTitleRef} />
+              <Input ref={threadTitleRef} isDisabled={isPending} />
               <FormErrorMessage>タイトルを入力してください！</FormErrorMessage>
             </VStack>
           </HStack>
@@ -73,13 +59,15 @@ export const ThreadForm: FC<ThreadFormProps> = ({ threadsDispatch }) => {
           <HStack spacing={5}>
             <FormLabel>トピック</FormLabel>
             <VStack>
-              <Textarea ref={threadTopicRef} />
+              <Textarea ref={threadTopicRef} isDisabled={isPending} />
               <FormErrorMessage>トピックを入力してください！</FormErrorMessage>
             </VStack>
           </HStack>
         </FormControl>
         <Center>
-          <Button type="submit">送信</Button>
+          <Button type="submit" isLoading={isPending}>
+            送信
+          </Button>
         </Center>
       </VStack>
     </form>

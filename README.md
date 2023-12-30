@@ -65,7 +65,8 @@ process.on("SIGINT", () => {
 ## vite.config.tsのプロキシ設定
 上記のように`json-server`の起動を変更したのに伴ってこちらも修正。とはいえ、共通のポートを使うようにするようにしただけ。デフォルト値は気分であえて全然違うのを設定しているがfetch時になにかおかしいことを判別しやすくなるかな？程度でとくに意味はない
 
-```ts:vite.config.ts
+```ts
+// vite.config.ts
 const root = resolve(__dirname, "../");
 const tempPortFilePath = join(root, "temp-port.txt");
 
@@ -133,9 +134,12 @@ npx @biomejs/biome init
 </ErrorBoundary>
 ```
 
-エラーが生じた際に専用の状態を管理しなくても、それ用画面を出してくれる。
+エラーが生じた際に専用の状態を管理しなくても、指定したフォールバックコンポーネントの画面を表示してくれる。
 
-## suspense / TanStack Query
-スレッドの取得の部分で`Suspense`を使ってみることにした。単に標準fetchだとエラーバウンダリに補足されなかったり，無限にPromiseがsettledにならず止まらなかったり，`ErrorBoundary`のFallbackComponentとして設定しているエラー復帰も効かない（これはサスペンドされているコンポーネントの状態が変わらないせい？）。書き方がまったくわからないので諦めて`TanStack Query`の公式ページに載っているやり方をそのまま使った。
+## Suspense / TanStack Query
+スレッドの取得の部分で`Suspense`を使ってみることにした。単に標準fetchだとエラーバウンダリに補足されなかったり，無限にPromiseがsettledにならず止まらなかったり，`ErrorBoundary`のFallbackComponentとして設定しているエラー復帰も効かない（これはサスペンドされているコンポーネントの状態が変わらないせい？）。生fetchで回避する書き方がわからないので諦めて`TanStack Query`の公式ページに載っているやり方をそのまま使った。
 
 [TanStack Query v5 - Suspense](https://tanstack.com/query/latest/docs/react/guides/suspense)
+
+## 状態管理（クエリキャッシュ）
+本書では画面に表示するスレッドのリストの状態管理および更新状況（ローディングやエラー）をContext経由でReducerで行っている。DBであるjson-serverから取得したデータをuseEffectを使って初期化している。今回は`TanStack Query`を使うことにしたので、データフェッチによって取得したクエリキャッシュはすべてTanStack Queryに寄せる。

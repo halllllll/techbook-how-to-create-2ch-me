@@ -14,6 +14,9 @@
       }
     }
   },
+  "formatter": {
+    "enabled": true
+  },
   "json": {
     "parser": {
       "allowComments": true

@@ -1,30 +1,10 @@
 import { Box, ListItem, OrderedList } from '@chakra-ui/react';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { type FC } from 'react';
-import { Thread, ThreadContentProps } from '../types/types';
+import { useGetThreads } from '../service/thread';
+import { ThreadContentProps } from '../types/types';
 
-const sleep = async (n: number) => {
-  return new Promise((resolve) => setTimeout(resolve, n));
-};
-
-const fetchData = async (): Promise<Thread[]> => {
-  await sleep(2000);
-  const fetchedData = await fetch('/api/threadsx');
-  if (!fetchedData.ok) {
-    throw new Error('Error in fetching!');
-  }
-  return await fetchedData.json();
-};
-
-const useFetchData = (): Thread[] => {
-  const { data, error } = useSuspenseQuery({ queryKey: ['yes'], queryFn: fetchData });
-  if (error) throw error;
-  return data;
-};
-
-export const ThreadList: FC<ThreadContentProps> = ({ threadsDispatch, threadsState }) => {
-  const result = useFetchData();
-  console.dir(result);
+export const ThreadList: FC<ThreadContentProps> = ({ threadsDispatch }) => {
+  const { data: result } = useGetThreads();
   return (
     <>
       <Box>
