@@ -1,8 +1,17 @@
 import { Thread } from '../../types/types';
 import { sleep } from '../../utils/sleep';
 
+export const getThread = async (threadId: number): Promise<Thread> => {
+  await sleep(200);
+  const fetchedData = await fetch(`/api/threads/${threadId}`);
+  if (!fetchedData.ok) {
+    throw new Error(`Error at fetching thread ${threadId}!`);
+  }
+  return await fetchedData.json();
+};
+
 export const getThreads = async (): Promise<Thread[]> => {
-  await sleep(2000);
+  await sleep(500);
   const fetchedData = await fetch('/api/threads');
   if (!fetchedData.ok) {
     throw new Error('Error at fetching threads!');
@@ -16,7 +25,7 @@ type P = {
   topic: string;
 };
 export const postThread = async (p: P) => {
-  await sleep(2000);
+  await sleep(500);
   const fetchedNewThread = await fetch('/api/threads', {
     method: 'POST',
     headers: {

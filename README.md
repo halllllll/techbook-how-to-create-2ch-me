@@ -111,6 +111,9 @@ npx @biomejs/biome init
 - formまわりが若干異なる気がする
   - `useRef`とエラー。本書では「どのInputが不正か」をちゃんとやってるが、ここでは特定のフォームの中全体で考えることにして横着した
 
+## date-fns v3
+日時のフォーマット。だいそれたことをしているわけではないが、書いてる途中で`date-fns`がメジャーアップデートされてv3になったので、ついでに導入した
+
 ## react-router-dom
 本書では`BrowserRouter`コンポーネントを使っている。今回はv6推奨の[createBrowserRouter](https://reactrouter.com/en/main/routers/create-browser-router)を導入してみた。
 

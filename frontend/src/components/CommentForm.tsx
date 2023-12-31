@@ -1,43 +1,46 @@
 import { type FC, FormEventHandler, useCallback, useRef, useState } from 'react';
-import { usePostThread } from '../service/thread';
+import { usePostComment } from '../service/comment';
 import { Form } from './Form';
 
-export const ThreadForm: FC = () => {
+type Props = {
+  threadId: string;
+};
+export const CommentForm: FC<Props> = ({ threadId }) => {
   const [isError, setIsError] = useState<boolean>(false); // メッセージ自体じゃなくてエラーのスイッチにした（横着）
   // 本書に倣ってuseRefを使う
   const formRef = useRef<HTMLFormElement>(null);
-  const threadTitleRef = useRef<HTMLInputElement>(null);
-  const threadTopicRef = useRef<HTMLTextAreaElement>(null);
+  const commenterRef = useRef<HTMLInputElement>(null);
+  const commentRef = useRef<HTMLTextAreaElement>(null);
 
-  const { mutate, isPending } = usePostThread();
+  const { mutate, isPending } = usePostComment(Number(threadId));
   const handleSubmit = useCallback<FormEventHandler>(
     async (event) => {
       event.preventDefault();
       setIsError(false);
       // 超簡易的バリデーションチェック(手抜き)
-      if (!threadTitleRef.current?.value || !threadTopicRef.current?.value) {
+      if (!commenterRef.current?.value || !commentRef.current?.value) {
         setIsError(true);
         return;
       }
-
-      // ここからTanStack QueryのuseMutationを使う
-      // （useMutationのオプションで設定しているため、react-error-boundaryのためのshowBoundaryは不要）
-      const data = { title: threadTitleRef.current.value, topic: threadTopicRef.current.value };
+      const data = {
+        threadId: Number(threadId),
+        commenter: commenterRef.current?.value,
+        commentContent: commentRef.current?.value,
+      };
       mutate(data, {
         onSuccess: () => formRef.current?.reset(),
-        onError: () => {},
       });
     },
-    [mutate],
+    [mutate, threadId],
   );
 
   return (
     <Form
       formRef={formRef}
-      inputRef={threadTitleRef}
-      inpuTitle={'タイトル'}
-      textareaRef={threadTopicRef}
-      textareaTitle={'トピック'}
+      inputRef={commenterRef}
+      inpuTitle={'投稿者'}
+      textareaRef={commentRef}
+      textareaTitle={'コメント'}
       isError={isError}
       isPending={isPending}
       handleSubmit={handleSubmit}

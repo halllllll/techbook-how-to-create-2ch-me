@@ -1,7 +1,16 @@
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
 
 import { threadKeys, useThreadCache } from './cache';
-import { getThreads, postThread } from './queries';
+import { getThread, getThreads, postThread } from './queries';
+
+export const useGetThread = (threadId: number) => {
+  const { data, isPending, isError, error } = useSuspenseQuery({
+    queryKey: threadKeys.detail(threadId),
+    queryFn: () => getThread(threadId),
+  });
+  if (error) throw error;
+  return { data, isPending, isError, error };
+};
 
 export const useGetThreads = () => {
   const { data, isPending, isError, error } = useSuspenseQuery({
@@ -18,7 +27,7 @@ export const usePostThread = () => {
   const { mutate, error, status, isError, isPending, isSuccess } = useMutation({
     mutationFn: postThread,
     onSuccess: () => {
-      return invalidateThread();
+      invalidateThread();
     },
     throwOnError: true, // to escalation for ErrorBoundary
   });

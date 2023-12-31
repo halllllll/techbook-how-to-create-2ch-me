@@ -1,5 +1,6 @@
-import { Box, ListItem, Thead, UnorderedList } from '@chakra-ui/react';
+import { Box, ListItem, UnorderedList } from '@chakra-ui/react';
 import { type FC } from 'react';
+import { Link } from 'react-router-dom';
 import { useGetThreadCommentsCount } from '../service/comment';
 import { useGetThreads } from '../service/thread';
 
@@ -15,7 +16,9 @@ export const ThreadList: FC = () => {
             return (
               <ListItem key={thread.id}>
                 <Box>
-                  {thread.id}: {thread.title} {commentsCount[thread.id]}
+                  <Link to={`/threads/${thread.id}`}>
+                    {thread.id}: {thread.title} {commentsCount[thread.id]}
+                  </Link>
                 </Box>
               </ListItem>
             );
