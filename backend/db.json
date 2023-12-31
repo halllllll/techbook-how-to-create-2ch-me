@@ -1,34 +1,7 @@
 {
   "threads": [
-    {
-      "title": "sososo",
-      "topic": "iiii",
-      "createdAt": "2023-12-24T11:11:32.029+09:00",
-      "commentTotal": 5,
-      "id": 1
-    },
-    {
-      "title": "aaaaaaaaa",
-      "topic": "fd",
-      "createdAt": "2023-12-24T11:12:13.329+09:00",
-      "commentTotal": 7,
-      "id": 2
-    },
-    {
-      "title": "fdsafa",
-      "topic": "fdsafa",
-      "createdAt": "2023-12-24T11:12:16.760+09:00",
-      "commentTotal": 4,
-      "id": 3
-    },
-    {
-      "title": "rrr",
-      "topic": "ddd",
-      "createdAt": "2023-12-31T11:09:17.514+09:00",
-      "commentTotal": 0,
-      "id": 4
-    }
   ],
-  "comments": [],
+  "comments": [
+ ],
   "users": []
 }

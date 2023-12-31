@@ -2,6 +2,9 @@
 
 # dif
 
+## やったところ
+コメントの投稿まで。ユーザー管理は実装してない
+
 ## devcontainer
 devcontainerを使う
 ## json-serverをnodeで動かす
@@ -112,7 +115,7 @@ npx @biomejs/biome init
   - `useRef`とエラー。本書では「どのInputが不正か」をちゃんとやってるが、ここでは特定のフォームの中全体で考えることにして横着した
 
 ## date-fns v3
-日時のフォーマット。だいそれたことをしているわけではないが、書いてる途中で`date-fns`がメジャーアップデートされてv3になったので、ついでに導入した
+日時のフォーマット。だいそれたことをしているわけではないが、書いてる途中で[ごく最近(12/03)](https://blog.date-fns.org/v3-is-out/)`date-fns`がメジャーアップデートされてv3になったので、ついでに導入した
 
 ## react-router-dom
 本書では`BrowserRouter`コンポーネントを使っている。今回はv6推奨の[createBrowserRouter](https://reactrouter.com/en/main/routers/create-browser-router)を導入してみた。

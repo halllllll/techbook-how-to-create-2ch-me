@@ -4,7 +4,6 @@ import { useMemo } from 'react';
 export const commentKeys = {
   all: ['comment'] as const,
   comments: () => [...commentKeys.all, 'comments'] as const,
-  // comment: (filters: string) => [...commentKeys.comments(), { filters }] as const,
   threadComments: (threadId: number) => [...commentKeys.comments(), { threadId }] as const,
   threadCommentCount: (threadId: number) =>
     [...commentKeys.comments(), 'count', { threadId }] as const,
