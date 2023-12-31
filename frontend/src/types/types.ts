@@ -23,10 +23,6 @@ export type UserState = {
 
 export type UserAction =
   | {
-      type: 'add_comment';
-      newComment: number;
-    }
-  | {
       type: 'set_user';
       user: User;
     }
@@ -47,34 +43,11 @@ export type Thread = {
   builder: string;
 };
 
-export type ThreadState = {
-  threads: Thread[];
-  isLoading: boolean;
-  currentThread: null | Thread;
-  error: null | string;
-};
-
-export type ThreadAction =
-  | {
-      type: 'add_thread';
-      newThread: Thread;
-    }
-  | {
-      type: 'set_threads';
-      threads: Thread[];
-    }
-  | {
-      type: 'set_error';
-      error: string | null;
-    }
-  | {
-      type: 'reset';
-    };
-
-export type ThreadFormProps = {
-  threadsDispatch: React.Dispatch<ThreadAction>;
-};
-
-export type ThreadContentProps = ThreadFormProps & {
-  threadsState: ThreadState;
+export type Comment = {
+  id: number;
+  commentNo: number;
+  commenter: string;
+  commentContent: string;
+  createdAt: string;
+  threadId: number;
 };

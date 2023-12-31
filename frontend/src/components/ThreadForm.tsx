@@ -11,9 +11,8 @@ import {
 } from '@chakra-ui/react';
 import { type FC, FormEventHandler, useCallback, useRef, useState } from 'react';
 import { usePostThread } from '../service/thread';
-import { ThreadFormProps } from '../types/types';
 
-export const ThreadForm: FC<ThreadFormProps> = ({ threadsDispatch }) => {
+export const ThreadForm: FC = () => {
   const [isError, setIsError] = useState<boolean>(false); // メッセージ自体じゃなくてエラーのスイッチにした（横着）
   // 本書に倣ってuseRefを使う
   const formRef = useRef<HTMLFormElement>(null);

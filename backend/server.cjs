@@ -13,7 +13,6 @@ const tempPortFilePath = path.join(root, 'temp-port.txt');
 server.use(jsonServer.bodyParser);
 
 server.post('/threads', (req, res, next) => {
-  console.log("よっしゃ〜")
   if (!req.body.title) {
     return res.status(400).json({
       message: 'スレッドのタイトルが入力されていません',
